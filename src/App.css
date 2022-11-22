@@ -36,3 +36,227 @@
     transform: rotate(360deg);
   }
 }
+body, #root {
+  /* width: 100%; */
+  margin:0;
+  padding:0;
+}
+
+#root {
+  max-width:100%;
+  /* border:1px solid magenta; */
+  /* overflow:hidden; */
+  /* overflow:scroll; */
+  position: absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+}
+
+.lightLabel {
+  display: inline-block;
+  width:1em;
+  font-size: small;
+  color:black;
+  /* color:rgb(124, 124, 124); */
+}
+
+.main {
+  display:block;
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+
+  /* display: flex; */
+  /* flex-flow: row; */
+  box-sizing: border-box;
+  /* max-width:100%; */
+}
+
+.sidePanel {
+  display: flex;
+  flex-flow: column;
+  align-content: stretch;
+  border:1px solid black;
+  border-radius: 1em;
+  padding-bottom: 20px;
+  /* margin: 10px; */
+  box-sizing: border-box;
+  /* background-color: rgb(219, 159, 43); */
+  background: linear-gradient(hsl(60, 43%, 58%), rgb(255,255,255));
+  color:black;
+}
+.sideItem {
+  display: flex;
+  flex-flow: column;
+  margin-top:20px;
+  margin-left:20px;
+  margin-right:20px;
+  margin-bottom:0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+}
+
+.sideItem ul {
+  list-style-type: none;
+  margin:0;
+  padding:0;
+}
+
+.sideItem label {
+  display: inline-block;
+  width:17em;
+  padding-right:1ex;
+  text-align: left;
+  margin-bottom:10px;
+  /* border:1px solid red; */
+}
+.sideItem input[type="number"] {
+  width:60px;
+}
+/* .sideItem input[type="checkbox"] {
+  margin-left:0;
+} */
+
+.inputContainer {
+  display: inline-block;
+  border: 1px solid red;
+}
+
+h1 {
+  margin-left:20px;
+  margin-top:20px;
+  font-size:2.5em;
+  text-shadow: 2px 7px 5px rgba(0,0,0,0.3),
+    0px -4px 10px rgba(255,255,255,0.3);
+
+}
+
+.sideButton {
+  /* background: linear-gradient(hsl(212, 52%, 36%), hsl(56, 47%, 38%)); */
+  margin-bottom:10px;
+  border: 2px solid black;
+  border-radius: 0.5em;
+  padding: 10px;
+  /* background-color: hsl(212, 52%, 40%); */
+  color:black;
+  font-size:1.5em;
+  /* text-shadow: 2px 7px 5px rgba(0,0,0,0.3),
+      0px -4px 10px rgba(255,255,255,0.3); */
+  cursor: pointer;
+}
+
+.sideButton:hover {
+  /* background: linear-gradient(hsl(212, 30%%, 36%), hsl(56, 47%, 38%)); */
+  background-color: hsl(212, 52%, 36%);
+}
+.sideButton:active {
+  background-color: hsl(212, 52%, 30%);
+}
+
+.sideItem-minified .sideButton {
+  margin:0;
+  padding:0;
+  border:none;
+  background:inherit;
+  height:1.5em;
+  /* alt: */
+  /* background-color:hsl(212, 52%, 50%); */
+}
+
+.sideItem-minified .sideButton:hover {
+  text-decoration: underline;
+  /* alt: */
+  /* background-color:hsl(212, 52%, 46%); */
+}
+.sideItem-minified .sideButton:active {
+    /* background-color:hsl(212, 52%, 40%); */
+}
+.header {
+  position:absolute;
+  left:20px;
+  right:0;
+  top:0;
+  height:60px;
+}
+.left {
+  position:absolute;
+  left:0;
+  top:60px;
+  bottom:2em;
+  right:500px;
+  margin:0;
+  display: flex;
+  flex-flow: column;
+  /* max-width:30%; */
+  box-sizing: border-box;
+  /* flex-grow:1; */
+  /* flex-shrink: 1; */
+  /* width:70%; */
+  /* border:1px solid blue; */
+  padding-bottom:20px;
+  padding-right:20px;
+}
+
+.right {
+  position:absolute;
+  top:60px;
+  bottom:2em;
+  right:0;
+  width:500px;
+  margin:0;
+  /* border: 1px solid red; */
+  box-sizing: border-box;
+  padding: 20px;
+  padding-left:0;
+  overflow:auto;
+}
+
+.footer {
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:2em;
+}
+
+.invisible {
+  visibility: hidden;
+  height:0;
+}
+
+.segSize {
+  display: inline-block;
+  font-size: small;
+  color: black;
+  width:2em;
+  text-align: right;
+  margin-right:1em;
+
+}
+
+.segSize .invisible {
+  /* width: */
+  height:1em;
+  visibility: hidden;
+}
+
+.buttonRow {
+  margin-left:20px;
+  margin-top:20px;
+  margin-right:0;
+  margin-bottom:0;
+  padding-right:20px;
+  /* padding-bottom:20px; */
+}
+
+.rules {
+  /* background-color: rgb(219, 159, 43); */
+  /* color:darkblue; */
+  /* TODO weg mit folgendem und was sinnvolles her */
+  background-image: url("./res/checked.png");
+
+}

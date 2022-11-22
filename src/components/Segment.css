@@ -1,0 +1,18 @@
+.segment {
+  display:inline-flex;
+  flex-flow: row;
+  width:auto;
+  cursor: not-allowed;
+}
+
+.mayClick {
+  cursor: pointer;
+}
+
+.highlight {
+  background-color:yellow;
+}
+
+.segment:hover {
+  background-color: rgba(228, 215, 168, 1);
+}

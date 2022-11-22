@@ -1,0 +1,37 @@
+.boardParent {
+  display:inline-block;
+  /* margin:10px; */
+  box-sizing: border-box;
+  /* max-height:600px; */
+  overflow: auto;
+  margin-top: 20px;
+  margin-left: 20px;
+  padding-right:20px;
+  padding-bottom:20px;
+
+  /* border:inset;
+  border-radius: 1em;
+  border-width: 0.6em; */
+  border: 2px solid black;
+  border-radius: 0.5em;
+
+
+
+  /* background-color: rgb(219, 196, 151); */
+   /* background: linear-gradient(hsl(212, 52%, 36%), hsl(56, 47%, 38%)); */
+   background: linear-gradient(hsl(52, 87%, 69%), hsl(0, 0%, 100%));
+
+
+  /* max-width:100%; */
+}
+.board {
+  margin:0 auto;
+  /* margin-left: 300px; */
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top:20px;
+  padding-right:0;
+  padding-bottom:0;
+  padding-left:20px;
+}
