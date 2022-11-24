@@ -1,0 +1,9 @@
+/*
+[
+  {
+    "files": "**/*.js",
+    "command": "npm run flow",
+    "showOutput": true
+  }
+]
+*/

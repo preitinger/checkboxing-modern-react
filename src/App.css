@@ -151,10 +151,12 @@ h1 {
 
 .sideButton:hover {
   /* background: linear-gradient(hsl(212, 30%%, 36%), hsl(56, 47%, 38%)); */
-  background-color: hsl(212, 52%, 36%);
+  /* background-color: hsl(212, 52%, 36%); */
+  text-decoration: underline;
 }
 .sideButton:active {
-  background-color: hsl(212, 52%, 30%);
+  /* background-color: hsl(212, 52%, 30%); */
+  background-color: Window;
 }
 
 .sideItem-minified .sideButton {

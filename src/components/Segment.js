@@ -2,40 +2,38 @@ import {useState, useEffect} from 'react'
 import nextId from '../nextId'
 import Box from './Box'
 import './Segment.css'
+import {min, max} from '../utils/Util'
 
 let effectCounter = 0
 
-const Segment = ({env, rowIdx, segIdx, setSegSize}) => {
-  console.log("Segment: env=", env, "segIdx=", segIdx);
+const Segment = ({
+  seg, botMove, allowed,
+  updateOnlyAllowedSegId, doMove, setSegSize
+}) => {
+
+  console.log("Segment: allowed=", allowed);
 
   // (a) einzeln
   // const [first, setFirst] = useState(-1);
   // const [last, setLast] = useState(-1);
   // (b) zusammen
   const [state, setState] = useState({first:-1,last:-1});
-  useEffect(() => {
-    console.log('useEffect', effectCounter++);
-  })
+  // useEffect(() => {
+  //   console.log('useEffect', effectCounter++);
+  // })
 
-  console.log("Segment rendered in state", state);
+  const onSegEnter = () => {
+    setSegSize(seg.size);
+  }
 
-  const segment = env.state.board.rows[rowIdx].segments[segIdx]
-
-  const boxes = [];
-
-    const onSegEnter = () => {
-      setSegSize(segment.size);
-    }
-
-    const onSegLeave = () => {
-      setSegSize(null);
-    }
+  const onSegLeave = () => {
+    setSegSize(null);
+  }
 
   const onClick = (boxIdx) => () => {
     console.log("Segment.onClick: boxIdx=", boxIdx);
-    const segment = env.state.board.rows[rowIdx].segments[segIdx];
-    console.log("segment", segment);
-    if (segment.checked) return;
+    console.log("seg", seg);
+    if (seg.checked) return;
     // (a) einzeln
     // if (first === -1) {
     //   setFirst(boxIdx);
@@ -50,12 +48,12 @@ const Segment = ({env, rowIdx, segIdx, setSegSize}) => {
     // (b) zusammen
     if (state.first === -1) {
       setState({first: boxIdx, last: boxIdx});
-      env.updateActiveSegId(segment.id);
+      updateOnlyAllowedSegId(seg.id);
       return;
     }
 
-    env.updateActiveSegId(-1);
-    env.doMove(rowIdx, segIdx, state.first, boxIdx);
+    updateOnlyAllowedSegId(-1);
+    doMove(state.first, boxIdx);
     setState({first:-1,last:-1});
   }
 
@@ -79,7 +77,7 @@ const Segment = ({env, rowIdx, segIdx, setSegSize}) => {
       console.log("Escape");
 
       if (state.first === -1) return;
-      env.updateActiveSegId(-1);
+      updateOnlyAllowedSegId(-1);
       setState({first: -1, last: -1})
     }
   }
@@ -93,35 +91,40 @@ const Segment = ({env, rowIdx, segIdx, setSegSize}) => {
     return (first <= boxIdx && boxIdx <= last) || (last <= boxIdx && boxIdx <= first);
   }
 
-  for (let i = 0; i < segment.size; ++i) {
-    // Hier wird nie umsortiert oder hinzugefuegt oder entfernt (ausser wenn es ein neues segment mit einer neuen id waere...),
+  const boxes = [];
+
+  for (let i = 0; i < seg.size; ++i) {
+    // Hier wird nie umsortiert oder hinzugefuegt oder entfernt (ausser wenn es ein neues seg mit einer neuen id waere...),
     // also dieser key ok
 
     // Achtung! Currying at onClick, onEnter, and doMove, so i.e. onClick(i) returns a function
+
+    const leftIdx = min(state.first, state.last);
+    const rightIdx = max(state.first, state.last);
+
     boxes.push(
-      <Box key={segment.id + '.' + i}
-      env={env}
-      rowIdx={rowIdx}
-      segIdx={segIdx}
-      boxIdx={i}
-      humanMove={state}
+      // hier index als key ok da Inhalt von boxes statisch ist
+      <Box key={i}
+      checked={seg.checked || (leftIdx <= i && i <= rightIdx) || (botMove != null && botMove.first <= i && i <= botMove.last)}
       onClick={onClick(i)}
       onEnter={onEnter(i)}
       />)
   }
 
   let className = 'segment';
-  const mayClick = env.state.botMove.rowIdx === -1 && !segment.checked && (env.state.activeSegId === -1 || env.state.activeSegId === segment.id);
-  console.log('mayClick: ', mayClick);
-  if (mayClick || state.first !== -1) className += ' mayClick';
-  const highlight = env.state.botMove.rowIdx === rowIdx && env.state.botMove.segIdx === segIdx;
-  if (highlight) className += ' highlight';
-  // console.log(className);
+  if (botMove != null) {
+    className += " highlight";
+  }
+  if (allowed && !seg.checked) {
+    className += " allowed";
+  } else {
+    className += " not-allowed"
+  }
 
   // debugger
 
   return (
-    <div className={className} onKeyDown={onKeyDown} title={segment.size}
+    <div className={className} onKeyDown={onKeyDown} title={seg.size}
     onMouseEnter={onSegEnter} onMouseLeave={onSegLeave}>
       {/*&nbsp;<span className='lightLabel'>{segment.size}</span>*/}
       {boxes}

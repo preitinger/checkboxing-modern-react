@@ -1,76 +1,86 @@
-import {useState, useRef} from 'react'
+// @flow
+import {useState, useEffect, useRef} from 'react'
 import produce from 'immer';
 import '../App.css'
+import '../utils/Radio.css'
 import SideItem from './SideItem'
+import Msg from './Msg'
+import React from 'react';
+
 
 let originalSettings = null;
 
-const SidePanel = ({state}) => {
-  console.log("SidePanel: state=", state);
+const SidePanel = ({state, onSettingsUpdate}) => {
+  console.log("SidePanel: onSettingsUpdate=", onSettingsUpdate);
+  // console.log("SidePanel: state=", state);
   if (!originalSettings) originalSettings = state.settings;
-  const [tmpSettings, setTmpSettings] = useState(state.settings)
+  const [tmpSettings, setTmpSettings] = useState(state.settings);
+  const [delayTimerId, setDelayTimerId] = useState(null);
+  useEffect(() => {
+    onSettingsUpdate(tmpSettings);
+  })
 
-  console.log("originalSettings", originalSettings);
-  console.log("state.settings", state.settings);
-  console.log("tmpSettings", tmpSettings);
+  // console.log("originalSettings", originalSettings);
+  // console.log("state.settings", state.settings);
+  // console.log("tmpSettings", tmpSettings);
 
   const numRowsChange = (event) => {
-    setTmpSettings(produce(draft => {
+    setTmpSettings(produce(tmpSettings, draft => {
       draft.game.rowCount = event.target.value;
     }))
   }
   const botChange = (event) => {
-    setTmpSettings(produce(draft => {
+    setTmpSettings(produce(tmpSettings, draft => {
       draft.game.bots[event.target.name] = event.target.checked;
     }))
   }
   const lastWinsChange = (event) => {
-    console.log("lastWinsChange entered");
-    setTmpSettings(produce(draft => {
+    // console.log("lastWinsChange entered");
+    setTmpSettings(produce(tmpSettings, draft => {
       draft.game.lastWins = (
         event.target.value === "win" && event.target.checked
       ) || (
         event.target.value === "loose" && !event.target.checked
       )
-      console.log("new lastWins", draft.game.lastWins);
+      // console.log("new lastWins", draft.game.lastWins);
     }))
   }
   return (
     <div className="sidePanel">
-      <SideItem initiallyVisible={true} title="Einstellungen" content=
+      <SideItem initiallyVisible={false} title={Msg.settings()} content=
       {
         <>
           <ul>
             <li>
               <label htmlFor="numRows">
-              Anzahl Zeilen
+              {Msg.numRows()}
               </label>
               <input id="numRows" type="number" value={tmpSettings.game.rowCount} onChange={numRowsChange}/>
             </li>
             <li>
               <label htmlFor="bot0">
-              Computer spielt für Spieler 1
+              {Msg.botPlaying(0)}
               </label>
               <input id="bot0" name="0" type="checkbox" checked={tmpSettings.game.bots[0]}
               onChange={botChange}/>
             </li>
             <li>
               <label htmlFor="bot1">
-              Computer spielt für Spieler 2
+              {Msg.botPlaying(1)}
               </label>
               <input id="bot1" name="1" type="checkbox" checked={tmpSettings.game.bots[1]}
               onChange={botChange}/>
             </li>
             <li>
               <label htmlFor="lastWins">
-              Mit letztem Zug gewinnen
+              {Msg.lastWins()}
               </label>
               <input id="lastWins" name="lastWins" type="radio" value="win" checked={tmpSettings.game.lastWins}
               onChange={lastWinsChange}/>
             </li>
             <li>
               <label htmlFor="lastLooses">
-              Mit letztem Zug verlieren
+              {Msg.lastLooses()}
               </label>
               <input id="lastLooses" name="lastWins" type="radio" value="loose" checked={!tmpSettings.game.lastWins}
               onChange={lastWinsChange}/>
@@ -79,14 +89,9 @@ const SidePanel = ({state}) => {
         </>
       }
       />
-      <SideItem title="Spielregeln" initiallyVisible={true} content={
+      <SideItem title={Msg.rules()} initiallyVisible={true} content={
         <div className="rules">
-        2 Spieler checken abwechselnd zusammenhängende Abschnitte von Checkboxen
-        in einer Zeile. In Zeile 1 befindet sich nur eine Checkbox, in der nächsten eine mehr usw.
-        Ein gecheckter Abschnitt darf aus beliebig vielen bisher ungecheckten Checkboxen nebeneinander bestehen.
-        Das Spiel endet, wenn alle Checkboxen gecheckt sind.
-        Je nach eingestellter Variante verliert oder gewinnt derjenige Spieler,
-        der die letzte Checkbox gecheckt hat.
+        {Msg.rulesContent()}
         </div>
       }/>
     </div>

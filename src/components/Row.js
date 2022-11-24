@@ -2,21 +2,27 @@ import Segment from './Segment'
 import './Row.css'
 import {useState, useRef} from 'react'
 
-const Row = ({env, rowIdx}) => {
-  console.log("Row: env=", env, "rowIdx=", rowIdx);
+const Row = ({
+  row, botMove, noneAllowed, onlyAllowedSegId,
+  updateOnlyAllowedSegId, doMove
+}) => {
   const [segSize, setSegSize] = useState(null)
+  console.log("Row: row=", row);
+  console.log("doMove", doMove);
 
-  const row = env.state.board.rows[rowIdx];
+
 
   return (
     <div className='row'>
     <span className={segSize !== null ? 'segSize' : 'segSize hidden'}>{segSize}</span>
-    {row.segments.map((segment, i) =>
+    {row.segments.map((seg, i) =>
       <Segment
-        key={segment.id}
-        env={env}
-        rowIdx={rowIdx}
-        segIdx={i}
+        key={seg.id}
+        seg={seg}
+        botMove={botMove != null && botMove.segIdx === i ? botMove : null}
+        allowed={!noneAllowed && (onlyAllowedSegId === -1 || onlyAllowedSegId == seg.id)}
+        updateOnlyAllowedSegId={updateOnlyAllowedSegId}
+        doMove={doMove(i)}
         setSegSize={setSegSize}
       />
     )}

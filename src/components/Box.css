@@ -1,26 +1,27 @@
-.box {
-  display:inline-block;
-  width:10px;
-  height:10px;
-  cursor: inherit;
-  border:2px solid black;
-  border-radius:3px;
-  margin:3px;
-  padding:0;
-}
+@import url("../utils/Checkbox.css");
 
-.boxImg {
-  padding:0;
-  margin:0;
-  display:block;
-}
 
-.boxContainer2 {
+.boxContainer {
   display:inline-block;
   margin:3px;
-  cursor:inherit;
-
 }
 
-.box2 {
+.board input[type="checkbox"] {
+  --edge-len: 30px;
+  width: var(--edge-len);
+  height: var(--edge-len);
+}
+
+.board input[type="checkbox"]::before {
+  content: "";
+  width: var(--edge-len);
+  height: var(--edge-len);
+  background-size: var(--edge-len);
+}
+
+.allowed input[type="checkbox"] {
+  cursor:pointer;
+}
+.not-allowed input[type="checkbox"] {
+  cursor:not-allowed;
 }

@@ -4,27 +4,30 @@ import Board from './components/Board'
 import SidePanel from './components/SidePanel'
 import Move from './Move'
 import {mkBoard} from './Board'
-
-import {useState, useRef} from 'react'
-
+import {useState, useRef, useEffect} from 'react'
 import nextId from './nextId'
-
 import produce from 'immer';
-
 import checkedImg from './res/checked.png'
-
-import './utils/Checkbox.css'
+// import './utils/Checkbox.css'
+import Root from './testRerendering/Root'
+import Msg from './components/Msg'
+import BotMove from './BotMove'
+import Timer from './utils/Timer.tsx'
 
 const makeSettings = () => ({
   game: {
     rowCount: 5,
-    bots: [false, true],
-    lastWins: false,
+    bots: [true, false],
+    lastWins: true,
   },
   botMoves: [
     {
       animationMs: 500,
       priority: "random", // or "short" or "long"
+    },
+    {
+      animationMs: 500,
+      priority: "long", // or "short" or "long"
     },
   ]
 })
@@ -58,75 +61,75 @@ const makeSettings = () => ({
 // }
 
 const App = () => {
+  // // TODO begin test
+  // return <Root/>
+  // // TODO end test
+
+
   const settings = makeSettings();
-  console.log("settings", settings);
+  // console.log("settings", settings);
   const [state, setState] = useState({
     settings: settings,
     board: mkBoard(settings.game.rowCount),
     player: 0, // TODO -1 und dann erst aendern?
     botMove: Move.mkMove2(), // initially empty move
-    activeSegId: -1,
+    onlyAllowedSegId: -1,
   });
+  useEffect(() => {
 
-  // const remRowInput = useRef(null);
-  //
-  // const addRow = () => {
-  //   console.log("addRow");
-  //   setState(produce(state, (draft) => {
-  //     draft.board.rows.push(makeRow(5))
-  //   }))
-  // }
-  //
-  // const onRemNumberChange = (event) => {
-  //   console.log("onRemNumberChange", event);
-  //   setState(produce(state, (draft) => {
-  //     draft.removeRow = event.target.value;
-  //   }))
-  // }
-
-  // const removeRow = () => {
-  //   setState(produce(state, draft => {
-  //     const remRowIdx = remRowInput.current.value;
-  //     draft.board.rows.splice(remRowIdx, 1)
-  //   }))
-  // }
-
-  // const onSegmentClicked = rowId => segmentId => boxIdx => () => {
-  //   console.log("onSegmentClicked", rowId, segmentId, boxIdx);
-  // }
-
-  const env = {
-    state: state,
-
-    updateActiveSegId: (segId) => {
-      console.log("updateActiveSegId: segId=", segId);
-      setState(state1 => produce(state1, draft => {
-        draft.activeSegId = segId;
-      }))
-    },
-
-    doMove: (rowIdx, segIdx, first, last) => {
-      console.log('App.doMove: state.board');
-      setState(state1 => produce(state1, draft => {
-        console.log("innerhalb von doMove: activeSegId=", draft.activeSegId);
-        Move.doMove(draft.board, Move.mkMove(rowIdx)(segIdx)(first)(last));
-      }))
+    if (state.settings.game.bots[state.player]) {
+      if (state.botMove.rowIdx === -1) {
+        setState(s => produce(s, draft => {
+          console.log("board before BotMove.query: ", draft.board);
+          const {move, willWin} = BotMove.query(draft.board, draft.settings.game.lastWins, draft.settings.botMoves[draft.player].priority);
+          if (move == null) {
+            console.error("move = null: Spielende noch nicht implementiert");
+          } else {
+            draft.botMove = move;
+            console.log("draft.botMove was set to ", move);
+          }
+        }))
+      } else {
+        console.warn("vor singleShot");
+        Timer.singleShot(state.settings.botMoves[state.player].animationMs).
+        then(() => {
+          console.log("then: ");
+          setState(s => produce(s, draft => {
+            console.log("draft.botMove: rowsIdx=", draft.botMove.rowIdx, draft.botMove.segIdx, draft.botMove.first, draft.botMove.last);
+            Move.doMove(draft.board, draft.botMove);
+            draft.player = 1 - draft.player;
+            draft.botMove = Move.mkMove2();
+          }))
+        })
+      }
     }
 
+  })
+
+  const onSettingsUpdate = (tmpSettings) => {
+    console.log("onSettingsUpdate: tmpSettings=", tmpSettings);
   }
 
-  console.log('vor return', state);
+  const updateOnlyAllowedSegId = (segId) => {
+    setState(s => produce(s, (draft => {
+      draft.onlyAllowedSegId = segId;
+    })))
+  }
 
-  // return (
-  //   <React.StrictMode>
-  //       <div className="main">
-  //         <div className="left">
-  //         </div>
-  //         <div className="right">
-  //         </div>
-  //       </div>
-  //   </React.StrictMode>
-  // );
+  const doMove = rowIdx => segIdx => async (first, last) => {
+    console.log("in doMove", rowIdx, segIdx, first, last);
+    setState(s => produce(s, draft => {
+      Move.doMove(draft.board, {
+        rowIdx: rowIdx,
+        segIdx: segIdx,
+        first: first,
+        last: last
+      })
+      draft.player = 1 - draft.player;
+
+    }))
+  }
+
   return (
     <React.StrictMode>
         <div className="main">
@@ -134,13 +137,20 @@ const App = () => {
             <h1>Checkboxing</h1>
           </header>
           <div className="left">
-            <Board env={env}/>
+            <Board
+            board={state.board}
+            botMove={state.botMove}
+            noneAllowed={state.settings.game.bots[state.player]}
+            onlyAllowedSegId={state.onlyAllowedSegId}
+            updateOnlyAllowedSegId={updateOnlyAllowedSegId}
+            doMove={doMove}
+            />
             <div className="buttonRow">
             <button className="sideButton">Spiel starten</button>
             </div>
           </div>
           <div className="right">
-            <SidePanel state={state}/>
+            <SidePanel state={state} onSettingsUpdate={onSettingsUpdate}/>
           </div>
           <footer className="footer">
             <a href="https://de.freepik.com/vektoren-kostenlos/haekchen-und-kreuzsymbole-in-flachen-stilen_18141266.htm#query=checkbox&position=0&from_view=keyword" target="_blank">Bild von starline</a> auf Freepik

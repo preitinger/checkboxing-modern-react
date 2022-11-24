@@ -2,11 +2,6 @@
   display:inline-flex;
   flex-flow: row;
   width:auto;
-  cursor: not-allowed;
-}
-
-.mayClick {
-  cursor: pointer;
 }
 
 .highlight {

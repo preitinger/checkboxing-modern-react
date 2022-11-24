@@ -2,7 +2,7 @@ import {min, max} from './utils/Util'
 import {mkSeg} from './Board'
 
 function doMove(board, move) {
-  console.log("doMove: board=", board, ", move=", move);
+  // console.log("doMove: board=", board, ", move=", move);
   const first = min(move.first, move.last)
   const last = max(move.first, move.last)
   const segs = board.rows[move.rowIdx].segments
