@@ -79,7 +79,7 @@ body, #root {
 .sidePanel {
   display: flex;
   flex-flow: column;
-  align-content: stretch;
+  /* align-content: stretch; */
   border:1px solid black;
   border-radius: 1em;
   padding-bottom: 20px;
@@ -107,12 +107,11 @@ body, #root {
 }
 
 .sideItem label {
-  display: inline-block;
-  width:17em;
-  padding-right:1ex;
-  text-align: left;
-  margin-bottom:10px;
-  /* border:1px solid red; */
+}
+.sideItem .input {
+}
+.sideItem td {
+  padding:0.4em;
 }
 .sideItem input[type="number"] {
   width:60px;
@@ -261,4 +260,77 @@ h1 {
   /* TODO weg mit folgendem und was sinnvolles her */
   background-image: url("./res/checked.png");
 
+}
+
+.sideItem fieldset {
+  margin:1em;
+  padding:0.5em;
+  border:1px solid gray;
+  border-radius:0.5em;
+}
+
+.sideItem fieldset > * {
+  margin: 0.5em;
+}
+
+/* layout test: */
+.testBoard2 {
+  display: flex;
+  flex-flow: row nowrap;
+  vertical-align: top;
+  /* display:flex;
+  flex-flow:row; */
+  /* margin-left:0;
+  margin-right:0; */
+  border:3px solid blue;
+}
+.boardWrap2 {
+  display:block;
+  border:3px solid blue;
+  /* float:left; */
+  max-width:800px;
+  max-height:400px;
+  overflow:auto;
+  /*max-height:200px; */
+  /* border:2px solid yellow; */
+  /* overflow:auto; */
+}
+.board2 {
+  display:inline-block;
+  text-align: center;
+  /* max-width:200px; */
+  border:3px solid red;
+  /* overflow:auto; */
+}
+.row2 {
+  /* border:1px solid blue; */
+  display:flex;
+  flex-flow:row;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+.sidePanelContainer2 {
+  display:block;
+  /* float:left; */
+  /* float:none; */
+  margin:0;
+  width:auto;
+  border:3px solid green;
+  /* margin-left:30px; */
+}
+
+.sidePanelContainer2 .sidePanel {
+  /* margin:0;
+  display: inline-flex;
+  border:1px solid blue; */
+  max-width:500px;
+  vertical-align:top;
+}
+.boxContainer2 {
+  display: inline-block;
+  margin:3px;
+}
+.boxContainer2 input[type="checkbox"] {
+  width: 30px;
+  height: 30px;
 }

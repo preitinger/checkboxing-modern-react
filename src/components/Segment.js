@@ -33,7 +33,7 @@ const Segment = ({
   const onClick = (boxIdx) => () => {
     console.log("Segment.onClick: boxIdx=", boxIdx);
     console.log("seg", seg);
-    if (seg.checked) return;
+    if (seg.checked || !allowed) return;
     // (a) einzeln
     // if (first === -1) {
     //   setFirst(boxIdx);

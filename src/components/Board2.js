@@ -1,17 +1,17 @@
-import './Board.css'
-import Row from './Row'
+import '../App.css'
+import Row2 from './Row2'
 
-const Board = ({
+const Board2 = ({
   board, botMove, noneAllowed, onlyAllowedSegId,
   updateOnlyAllowedSegId, doMove
 }) => {
 
-  const className = "board";
+  const className = "board2";
 
   return (
     <div className={className} data-testid='board'>
     {board.rows.map((row, i) =>
-      <Row
+      <Row2
       key={row.id}
       row={row}
       botMove={botMove.rowIdx === i ? botMove : null}
@@ -26,4 +26,4 @@ const Board = ({
 
 }
 
-export default Board
+export default Board2

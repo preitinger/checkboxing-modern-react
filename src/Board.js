@@ -37,4 +37,15 @@ const xorSum = (board) => {
   return x;
 }
 
-export {mkBoard, mkRow, mkSeg, xorSum}
+const gameOver = board => {
+  const rows = board.rows;
+  for (let i = 0; i < rows.length; ++i) {
+    const segments = rows[i].segments;
+    for (let j = 0; j < segments.length; ++j) {
+      if (!segments[j].checked) return false;
+    }
+  }
+  return true;
+}
+
+export {mkBoard, mkRow, mkSeg, xorSum, gameOver}

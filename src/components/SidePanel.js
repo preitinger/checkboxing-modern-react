@@ -51,12 +51,72 @@ const SidePanel = ({state, onSettingsUpdate}) => {
     }))
   }
   const priorityChange = player => (event) => {
+    console.log("priorityChange: player=", player + ", event.target.value=", event.target.value);
     if (event.target.checked) {
       setTmpSettings(produce(tmpSettings, draft => {
-        draft.botMoves[player].priority = event.value
+        draft.botMoves[player].priority = event.target.value
       }))
     }
   }
+
+  const botMoveSettings = (player) =>
+    <fieldset>
+      <legend>{Msg.forAtOnce(player)}</legend>
+      <fieldset>
+        <legend>{Msg.priority()}</legend>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <label htmlFor={"random" + player}>{Msg.random()}</label>
+              </td>
+              <td>
+                <input type="radio" id={"random" + player} name={"priority" + player}
+                checked={tmpSettings.botMoves[player].priority === "random"}
+                onChange={priorityChange(player)}
+                value="random" className="input"/>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor={"short" + player}>{Msg.short()}</label>
+              </td>
+              <td>
+                <input type="radio" id={"short" + player} name={"priority" + player}
+                checked={tmpSettings.botMoves[player].priority === "short"}
+                onChange={priorityChange(player)}
+                value="short" className="input"/>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor={"long" + player}>{Msg.long()}</label>
+              </td>
+              <td>
+                <input type="radio" id={"long" + player} name={"priority" + player}
+                checked={tmpSettings.botMoves[player].priority === "long"}
+                onChange={priorityChange(player)}
+                value="long" className="input"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <label htmlFor={"animationMs" + player}>{Msg.animationMs()}</label>
+            </td>
+            <td>
+              <input type="number" id={"animationMs" + player} value={tmpSettings.botMoves[player].animationMs}
+              onChange={animationMsChange(player)}/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </fieldset>;
+
   return (
     <div className="sidePanel">
       <SideItem initiallyVisible={false} title={Msg.settings()} content=
@@ -64,72 +124,67 @@ const SidePanel = ({state, onSettingsUpdate}) => {
         <>
         <fieldset>
           <legend>{Msg.forNextGame()}</legend>
-          <ul>
-            <li>
-              <label htmlFor="numRows">
-              {Msg.numRows()}
-              </label>
-              <input id="numRows" type="number" value={tmpSettings.game.rowCount} onChange={numRowsChange} className="input"/>
-            </li>
-            <li>
-              <label htmlFor="bot0">
-              {Msg.botPlaying(0)}
-              </label>
-              <input id="bot0" name="0" type="checkbox" checked={tmpSettings.game.bots[0]}
-              onChange={botChange} className="input"/>
-            </li>
-            <li>
-              <label htmlFor="bot1">
-              {Msg.botPlaying(1)}
-              </label>
-              <input id="bot1" name="1" type="checkbox" checked={tmpSettings.game.bots[1]}
-              onChange={botChange} className="input"/>
-            </li>
-            <li>
-              <label htmlFor="lastWins">
-              {Msg.lastWins()}
-              </label>
-              <input id="lastWins" name="lastWins" type="radio" value="win" checked={tmpSettings.game.lastWins}
-              onChange={lastWinsChange} className="input"/>
-            </li>
-            <li>
-              <label htmlFor="lastLooses">
-              {Msg.lastLooses()}
-              </label>
-              <input id="lastLooses" name="lastWins" type="radio" value="loose" checked={!tmpSettings.game.lastWins}
-              onChange={lastWinsChange} className="input"/>
-            </li>
-          </ul>
-          </fieldset>
-          <fieldset>
-            <legend>{Msg.forAtOnce(0)}</legend>
-            <ul>
-              <li>
-                <fieldset>
-                  <legend>{Msg.priority()}</legend>
-                  <ul>
-                    <li>
-                      <label htmlFor="random0">{Msg.random()}</label>
-                      <input type="radio" id="random0" name="priority0" value="random" className="input"/>
-                    </li>
-                    <li>
-                      <label htmlFor="short0">{Msg.short()}</label>
-                      <input type="radio" id="short0" name="priority0" value="short" className="input"/>
-                    </li>
-                    <li>
-                      <label htmlFor="long0">{Msg.long()}</label>
-                      <input type="radio" id="long0" name="priority0" value="long" className="input"/>
-                    </li>
-                  </ul>
-                </fieldset>
-              </li>
-              <li>
-                <label htmlFor="animationMs0">{Msg.animationMs()}</label>
-                <input type="number" id="animationMs0" value={tmpSettings.botMoves[0].animationMs}
-                onChange={animationMsChange(0)}/>
-              </li>
-            </ul>
-          </fieldset>
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <label htmlFor="numRows">
+                    {Msg.numRows()}
+                  </label>
+                </td>
+                <td>
+                  <input id="numRows" type="number" value={tmpSettings.game.rowCount} onChange={numRowsChange} className="input"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label htmlFor="bot0">
+                  {Msg.botPlaying(0)}
+                  </label>
+                </td>
+                <td>
+                  <input id="bot0" name="0" type="checkbox" checked={tmpSettings.game.bots[0]}
+                  onChange={botChange} className="input"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label htmlFor="bot1">
+                  {Msg.botPlaying(1)}
+                  </label>
+                </td>
+                <td>
+                  <input id="bot1" name="1" type="checkbox" checked={tmpSettings.game.bots[1]}
+                  onChange={botChange} className="input"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label htmlFor="lastWins">
+                  {Msg.lastWins()}
+                  </label>
+                </td>
+                <td>
+                  <input id="lastWins" name="lastWins" type="radio" value="win" checked={tmpSettings.game.lastWins}
+                  onChange={lastWinsChange} className="input"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label htmlFor="lastLooses">
+                  {Msg.lastLooses()}
+                  </label>
+                </td>
+                <td>
+                  <input id="lastLooses" name="lastWins" type="radio" value="loose" checked={!tmpSettings.game.lastWins}
+                  onChange={lastWinsChange} className="input"/>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </fieldset>
+        {botMoveSettings(0)}
+        {botMoveSettings(1)}
         </>
       }
       />
