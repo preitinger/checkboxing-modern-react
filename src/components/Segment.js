@@ -11,7 +11,7 @@ const Segment = ({
   updateOnlyAllowedSegId, doMove, setSegSize
 }) => {
 
-  console.log("Segment: allowed=", allowed);
+  // console.log("Segment: allowed=", allowed);
 
   // (a) einzeln
   // const [first, setFirst] = useState(-1);
@@ -31,8 +31,8 @@ const Segment = ({
   }
 
   const onClick = (boxIdx) => () => {
-    console.log("Segment.onClick: boxIdx=", boxIdx);
-    console.log("seg", seg);
+    // console.log("Segment.onClick: boxIdx=", boxIdx);
+    // console.log("seg", seg);
     if (seg.checked || !allowed) return;
     // (a) einzeln
     // if (first === -1) {
@@ -74,7 +74,7 @@ const Segment = ({
   const onKeyDown = (event) => {
 
     if (event.code === "Escape") {
-      console.log("Escape");
+      // console.log("Escape");
 
       if (state.first === -1) return;
       updateOnlyAllowedSegId(-1);
@@ -112,7 +112,7 @@ const Segment = ({
   }
 
   let className = 'segment';
-  if (botMove != null) {
+  if (botMove != null || state.first !== -1) {
     className += " highlight";
   }
   if (allowed && !seg.checked) {

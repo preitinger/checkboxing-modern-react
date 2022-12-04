@@ -1,5 +1,5 @@
 import {mkMove, doMove} from './Move'
-import {min, max} from './Util'
+import {min, max} from './utils/Util'
 import {mkBoard} from './Board'
 
 // Fake timers using Jest

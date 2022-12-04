@@ -1,5 +1,6 @@
 import {useState, useRef} from 'react'
 import '../App.css'
+import Msg from './Msg'
 
 const SideItem = (props) => {
   // console.log('SideItem props:', props);
@@ -13,7 +14,7 @@ const SideItem = (props) => {
     <div className={visible ? "sideItem" : "sideItem sideItem-minified"}>
       <button
         className="sideButton"
-        onClick={onClick}>{props.title}{visible ? "" : " ..."}
+        onClick={onClick}>{Msg.sideButtonLabel(props.title, !visible)}
       </button>
       {
         <div className={visible ? "" : "invisible"}>{props.content}</div>

@@ -9,30 +9,52 @@ import React from 'react';
 
 
 let originalSettings = null;
+const DELAY_MS = 1000;
 
 const SidePanel = ({state, onSettingsUpdate}) => {
-  console.log("SidePanel: onSettingsUpdate=", onSettingsUpdate);
+  // console.log("SidePanel: onSettingsUpdate=", onSettingsUpdate);
   // console.log("SidePanel: state=", state);
   if (!originalSettings) originalSettings = state.settings;
   const [tmpSettings, setTmpSettings] = useState(state.settings);
-  const [delayTimerId, setDelayTimerId] = useState(null);
   useEffect(() => {
-    onSettingsUpdate(tmpSettings);
+    if (tmpSettings !== state.settings) {
+      onSettingsUpdate(tmpSettings);
+    }
   }, [tmpSettings])
+
+  const MAX_ROW_COUNT = 50;
+  const MAX_ANIMATION_MS = 3000;
 
   // console.log("originalSettings", originalSettings);
   // console.log("state.settings", state.settings);
   // console.log("tmpSettings", tmpSettings);
 
   const numRowsChange = (event) => {
-    setTmpSettings(produce(tmpSettings, draft => {
-      draft.game.rowCount = event.target.value;
-    }))
+    let rowCount = parseInt(event.target.value);
+    if (isNaN(rowCount)) {
+      rowCount = 0;
+    }
+    if (!isNaN(rowCount)) {
+      setTmpSettings(produce(tmpSettings, draft => {
+        if (rowCount < 0) rowCount = 1;
+        if (rowCount > MAX_ROW_COUNT) rowCount = MAX_ROW_COUNT;
+        draft.game.rowCount = rowCount;
+        }))
+    }
   }
   const animationMsChange = player => (event) => {
-    setTmpSettings(produce(tmpSettings, draft => {
-      draft.botMoves[player].animationMs = event.target.value;
+    let ms = parseInt(event.target.value);
+    if (isNaN(ms)) {
+      ms = 0;
+    }
+
+    if (!isNaN(ms)) {
+      setTmpSettings(produce(tmpSettings, draft => {
+        if (ms < 0) ms = 0;
+        if (ms > MAX_ANIMATION_MS) ms = MAX_ANIMATION_MS;
+        draft.botMoves[player].animationMs = ms;
       }))
+    }
   }
   const botChange = (event) => {
     setTmpSettings(produce(tmpSettings, draft => {
@@ -109,7 +131,10 @@ const SidePanel = ({state, onSettingsUpdate}) => {
               <label htmlFor={"animationMs" + player}>{Msg.animationMs()}</label>
             </td>
             <td>
-              <input type="number" id={"animationMs" + player} value={tmpSettings.botMoves[player].animationMs}
+              <input type="number" id={"animationMs" + player}
+              value={tmpSettings.botMoves[player].animationMs}
+              min={0}
+              max={3000}
               onChange={animationMsChange(player)}/>
             </td>
           </tr>
@@ -133,7 +158,7 @@ const SidePanel = ({state, onSettingsUpdate}) => {
                   </label>
                 </td>
                 <td>
-                  <input id="numRows" type="number" value={tmpSettings.game.rowCount} onChange={numRowsChange} className="input"/>
+                  <input id="numRows" type="number" min={0} max={MAX_ROW_COUNT} defaultValue={tmpSettings.game.rowCount} onInput={numRowsChange} className="input"/>
                 </td>
               </tr>
               <tr>

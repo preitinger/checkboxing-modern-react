@@ -36,23 +36,152 @@
     transform: rotate(360deg);
   }
 }
-body, #root {
-  /* width: 100%; */
+
+/**************** BEGIN "import" von test *******************/
+.oben {
+  box-sizing: border-box;
+  /* height:50px;
+  width:auto; */
+  /* border:1px solid red; */
+  /* margin-oben: 20px;
+  margin-left: 20px; */
+  margin-left:3vh;
+  margin-top:3vh;
+  margin-bottom:10px;
+  margin-right:0;
+  /* height:5vh; */
+  display:flex;
+  align-items: baseline;
+  /* border:1px solid red; */
+}
+
+.oben-0 {
+  margin-left: 3vh;
+  width: 400px;
+  box-sizing:border-box;
+  /* border:1px solid black; */
+}
+
+.oben-0 h1 {
+  /* font-size:2.5em; */
+  /* font-size:4vh; */
+  text-shadow: 2px 7px 5px rgba(0,0,0,0.3),
+    0px -4px 10px rgba(255,255,255,0.3);
   margin:0;
   padding:0;
 }
 
-#root {
-  max-width:100%;
-  /* border:1px solid magenta; */
-  /* overflow:hidden; */
-  /* overflow:scroll; */
-  position: absolute;
-  left:0;
-  right:0;
-  top:0;
-  bottom:0;
+/* button row */
+.oben-1 {
+  padding-left:50px;
+  /* border:1px solid black; */
+  /* margin-left:40px; */
 }
+
+.main {
+  display:flex;
+  flex-flow: row nowrap;
+  /* max-width:100%; */
+  flex-shrink:1;
+  flex-grow: 1;
+  align-items: flex-start;
+  margin-left:3vh;
+  /* border:1px solid red; */
+}
+
+/* .main-00 {
+  margin:3vh;
+  flex-shrink:1;
+  overflow:auto;
+} */
+
+.main-01 {
+  margin:3vh;
+  overflow:auto;
+  border:2px inset;
+  /*
+   * Rahmen out: 2 * 3px
+   * oben: 3vh + 5vh
+   * main-00: 2 * 3vh
+   * unten: 50px
+   */
+
+  /* max-height: calc(100vh - 2 * 3px - 3vh - 5vh - 2 * 3vh - 50px); */
+  max-width: 95vw;
+  max-height:95vh;
+  /* border:3px solid blue; */
+  box-sizing: border-box;
+  align-self: top;
+  position:relative; /* damit child "boardHourGlass" absolut positionierbar */
+}
+
+.main-01-00 {
+  padding-left:50px;
+  padding-right:50px;
+  border:1px solid black;
+  width:1300px;
+  height:2000px;
+
+}
+
+.main-02 {
+  margin: 3vh;
+  /* overflow:auto; */
+  width:400px;
+  max-height:95vh;
+  box-sizing: border-box;
+  /* border:1px solid black; */
+}
+
+.main-02-00 {
+  /* width:400px; */
+  max-height: 80vh;
+  overflow:auto;
+  /* border:1px solid black; */
+}
+
+.main-02-01 {
+  width:200px;
+  height:100px;
+  /* border:1px solid black; */
+}
+
+.main-03 {
+  /* flex-shrink: 0; */
+}
+
+.unten {
+  margin-left:6vh;
+  box-sizing: border-box;
+  /* padding-left: 50px; */
+  height:50px;
+  /* border:3px solid yellow; */
+}
+
+.out {
+  /* neu: */
+  /* display:flex;
+  flex-flow:column nowrap; */
+
+  /* original: */
+  display:block;
+  /* max-height:100vh; */
+  /* border:3px solid red; */
+  /* overflow:auto; */
+  /* margin-left:0; */
+  /* margin-left:auto; */
+  /* margin-right:auto; */
+  /* border:1px solid red; */
+  width:fit-content;
+}
+
+/**************** END "import" von test *******************/
+
+/* body, #root {
+  margin:0;
+  padding:0;
+} */
+
 
 .lightLabel {
   display: inline-block;
@@ -62,21 +191,8 @@ body, #root {
   /* color:rgb(124, 124, 124); */
 }
 
-.main {
-  display:block;
-  position:absolute;
-  top:0;
-  right:0;
-  bottom:0;
-  left:0;
-
-  /* display: flex; */
-  /* flex-flow: row; */
-  box-sizing: border-box;
-  /* max-width:100%; */
-}
-
 .sidePanel {
+  margin:20px;
   display: flex;
   flex-flow: column;
   /* align-content: stretch; */
@@ -88,7 +204,13 @@ body, #root {
   /* background-color: rgb(219, 159, 43); */
   background: linear-gradient(hsl(60, 43%, 58%), rgb(255,255,255));
   color:black;
+  width:100%;
 }
+
+.delayed * {
+  cursor:wait;
+}
+
 .sideItem {
   display: flex;
   flex-flow: column;
@@ -108,41 +230,34 @@ body, #root {
 
 .sideItem label {
 }
+
 .sideItem .input {
 }
+
 .sideItem td {
   padding:0.4em;
 }
+
 .sideItem input[type="number"] {
   width:60px;
 }
-/* .sideItem input[type="checkbox"] {
-  margin-left:0;
-} */
 
 .inputContainer {
   display: inline-block;
   border: 1px solid red;
 }
 
-h1 {
-  margin-left:20px;
-  margin-top:20px;
-  font-size:2.5em;
-  text-shadow: 2px 7px 5px rgba(0,0,0,0.3),
-    0px -4px 10px rgba(255,255,255,0.3);
-
-}
-
 .sideButton {
   /* background: linear-gradient(hsl(212, 52%, 36%), hsl(56, 47%, 38%)); */
+  margin-left:0;
   margin-bottom:10px;
   border: 2px solid black;
   border-radius: 0.5em;
-  padding: 10px;
+  padding: 0.25em;
   /* background-color: hsl(212, 52%, 40%); */
   color:black;
-  font-size:1.5em;
+  /* font-size:1.5em; */
+  /* font-size:3vh; */
   /* text-shadow: 2px 7px 5px rgba(0,0,0,0.3),
       0px -4px 10px rgba(255,255,255,0.3); */
   cursor: pointer;
@@ -176,53 +291,6 @@ h1 {
 .sideItem-minified .sideButton:active {
     /* background-color:hsl(212, 52%, 40%); */
 }
-.header {
-  position:absolute;
-  left:20px;
-  right:0;
-  top:0;
-  height:60px;
-}
-.left {
-  position:absolute;
-  left:0;
-  top:60px;
-  bottom:2em;
-  right:500px;
-  margin:0;
-  display: flex;
-  flex-flow: column;
-  /* max-width:30%; */
-  box-sizing: border-box;
-  /* flex-grow:1; */
-  /* flex-shrink: 1; */
-  /* width:70%; */
-  /* border:1px solid blue; */
-  padding-bottom:20px;
-  padding-right:20px;
-}
-
-.right {
-  position:absolute;
-  top:60px;
-  bottom:2em;
-  right:0;
-  width:500px;
-  margin:0;
-  /* border: 1px solid red; */
-  box-sizing: border-box;
-  padding: 20px;
-  padding-left:0;
-  overflow:auto;
-}
-
-.footer {
-  position:absolute;
-  bottom:0;
-  left:0;
-  right:0;
-  height:2em;
-}
 
 .invisible {
   visibility: hidden;
@@ -230,18 +298,18 @@ h1 {
 }
 
 .segSize {
-  display: inline-block;
+  display: block;
   font-size: small;
   color: black;
-  width:2em;
   text-align: right;
-  margin-right:1em;
-
+  margin-top:2px;
+  margin-right:5px;
+  width:13px;
+  height:13px;
+  align-self: center;
 }
 
 .segSize .invisible {
-  /* width: */
-  height:1em;
   visibility: hidden;
 }
 
@@ -258,8 +326,9 @@ h1 {
   /* background-color: rgb(219, 159, 43); */
   /* color:darkblue; */
   /* TODO weg mit folgendem und was sinnvolles her */
-  background-image: url("./res/checked.png");
-
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.5em;
 }
 
 .sideItem fieldset {
@@ -273,64 +342,56 @@ h1 {
   margin: 0.5em;
 }
 
-/* layout test: */
-.testBoard2 {
-  display: flex;
-  flex-flow: row nowrap;
-  vertical-align: top;
-  /* display:flex;
-  flex-flow:row; */
-  /* margin-left:0;
-  margin-right:0; */
-  border:3px solid blue;
-}
-.boardWrap2 {
-  display:block;
-  border:3px solid blue;
-  /* float:left; */
-  max-width:800px;
-  max-height:400px;
-  overflow:auto;
-  /*max-height:200px; */
-  /* border:2px solid yellow; */
-  /* overflow:auto; */
-}
-.board2 {
-  display:inline-block;
-  text-align: center;
-  /* max-width:200px; */
-  border:3px solid red;
-  /* overflow:auto; */
-}
-.row2 {
-  /* border:1px solid blue; */
-  display:flex;
-  flex-flow:row;
-  flex-wrap: nowrap;
-  justify-content: center;
-}
-.sidePanelContainer2 {
-  display:block;
-  /* float:left; */
-  /* float:none; */
-  margin:0;
+.commentation {
+  margin:20px;
+  height:100px;
+  /* min-height:50px; */
   width:auto;
-  border:3px solid green;
-  /* margin-left:30px; */
+}
+.lightHint {
+  color:gray;
+  font-size:smaller;
 }
 
-.sidePanelContainer2 .sidePanel {
-  /* margin:0;
-  display: inline-flex;
-  border:1px solid blue; */
-  max-width:500px;
-  vertical-align:top;
+
+/******************************************/
+
+body, #root {
+  margin:0;
 }
-.boxContainer2 {
-  display: inline-block;
-  margin:3px;
+
+#root {
+  box-sizing: border-box;
+  position:relative;
+  width:100vw;
+  height:100vh;
+  display:block;
 }
-.boxContainer2 input[type="checkbox"] {
-  width: 30px;
-  height: 30px;
+
+.wrapper {
+  box-sizing: border-box;
+  height: 100vh;
+   width: 100vw;
+   /* background: #333; */
+   border: 6px solid #666;
+   display: flex;
+ }
+.left {
+  box-sizing: border-box;
+
+}
+.right {
+  box-sizing: border-box;
+  position: relative;
+  padding-left:10px;
+}
+.splitter {
+  box-sizing: border-box;
+  position:absolute;
+  width:10px;
+  height:100%;
+  top:0;
+  left:0;
+  cursor: col-resize;
+  background: #666;
 }
