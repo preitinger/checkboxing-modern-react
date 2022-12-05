@@ -1,81 +1,29 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/**************** BEGIN "import" von test *******************/
 .oben {
   box-sizing: border-box;
-  /* height:50px;
-  width:auto; */
-  /* border:1px solid red; */
-  /* margin-oben: 20px;
-  margin-left: 20px; */
   margin-left:3vh;
   margin-top:3vh;
   margin-bottom:10px;
   margin-right:0;
-  /* height:5vh; */
   display:flex;
   align-items: baseline;
-  /* border:1px solid red; */
 }
 
 .oben-0 {
   margin-left: 3vh;
   width: 400px;
   box-sizing:border-box;
-  /* border:1px solid black; */
 }
 
 .oben-0 h1 {
-  /* font-size:2.5em; */
-  /* font-size:4vh; */
   text-shadow: 2px 7px 5px rgba(0,0,0,0.3),
     0px -4px 10px rgba(255,255,255,0.3);
   margin:0;
   padding:0;
 }
 
-/* button row */
 .oben-1 {
   padding-left:50px;
-  /* border:1px solid black; */
-  /* margin-left:40px; */
 }
 
 .main {
@@ -86,30 +34,14 @@
   flex-grow: 1;
   align-items: flex-start;
   margin-left:3vh;
-  /* border:1px solid red; */
 }
-
-/* .main-00 {
-  margin:3vh;
-  flex-shrink:1;
-  overflow:auto;
-} */
 
 .main-01 {
   margin:3vh;
   overflow:auto;
   border:2px inset;
-  /*
-   * Rahmen out: 2 * 3px
-   * oben: 3vh + 5vh
-   * main-00: 2 * 3vh
-   * unten: 50px
-   */
-
-  /* max-height: calc(100vh - 2 * 3px - 3vh - 5vh - 2 * 3vh - 50px); */
   max-width: 95vw;
   max-height:95vh;
-  /* border:3px solid blue; */
   box-sizing: border-box;
   align-self: top;
   position:relative; /* damit child "boardHourGlass" absolut positionierbar */
