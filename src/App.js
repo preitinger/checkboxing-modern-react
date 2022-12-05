@@ -4,19 +4,12 @@ import Board from './components/Board'
 import SidePanel from './components/SidePanel'
 import Move from './Move'
 import {mkBoard, gameOver} from './Board'
-import {useState, useRef, useLayoutEffect, useEffect} from 'react'
-import nextId from './nextId'
+import {useState, useEffect} from 'react'
 import produce from 'immer';
-import checkedImg from './res/checked.png'
-// import './utils/Checkbox.css'
-import Root from './testRerendering/Root'
 import Msg from './components/Msg'
 import BotMove from './BotMove'
-// import Timer from './utils/Timer.tsx'
 import './components/Board.css'
-import Board2 from './components/Board2'
 import Commentation from './components/Commentation'
-import SplitPane from './utils/SplitPane'
 import VSplitPane from './utils/VSplitPane'
 import HSplitPane from './utils/HSplitPane'
 import SmilingComputer from './res/SmilingComputer.gif'
@@ -38,34 +31,6 @@ const makeSettings = () => ({
     },
   ]
 })
-
-
-// const makeSegment = (size) => {
-//   return {
-//     id: nextId(),
-//     size: size,
-//     checked: false,
-//   }
-// }
-//
-// const makeRow = (size) => {
-//   return {
-//     id: nextId(),
-//     segments: [makeSegment(size)]
-//   }
-// }
-//
-// const makeBoard = (size) => {
-//   const rows = []
-//
-//   for (let i = 0; i < size; ++i) {
-//     rows.push(makeRow(i + 1))
-//   }
-//
-//   return {
-//     rows: rows
-//   }
-// }
 
 const evtlStartBotMove = (draft) => {
   if (draft.settings.game.bots[draft.player]) {
@@ -139,13 +104,10 @@ const App = () => {
     evtlStartBotMove(draft);
     return draft;
   });
-  const [pendingBoardTimerId, setPendingBoardTimerId] = useState(null);
-  const [leftWidth, setLeftWidth] = useState(100);
 
   // Das Callback-Argument von useEffect wird genau einmal nach jedem render- oder re-render-
   // Vorgang aufgerufen.
   useEffect(() => {
-    // neu:
     if (state.botMoveTime != null) {
       const timerId = setTimeout(() => {
         setState(s => produce(s, draft => {
@@ -156,32 +118,6 @@ const App = () => {
         clearTimeout(timerId);
       }
     }
-
-    // // alt:
-    // console.warn("useEffect 1");
-    // if (state.player === -1) return;
-    // console.warn("useEffect 2");
-    //
-    // if (state.settings.game.bots[state.player]) {
-    //   console.warn("useEffect 3");
-    //   if (state.botMove == null || state.botMove.rowIdx === -1) {
-    //     console.error("botMove null or empty ");
-    //     return;
-    //   }
-    //
-    //   console.warn("before setTimeout");
-    //   const timer = setTimeout(() => {
-    //     setState(s => produce(s, draft => {
-    //       console.warn("in Timer-Funktion: draft.botMove.rowIdx=", draft.botMove.rowIdx);
-    //       doMoveAndContinue(draft, draft.botMove);
-    //     }))
-    //
-    //   }, state.settings.botMoves[state.player].animationMs);
-    //   return () => {
-    //     console.warn("before clearTimeout");
-    //     clearTimeout(timer);
-    //   }
-    // }
   });
 
   //
@@ -192,14 +128,7 @@ const App = () => {
           draft.board = draft.pendingBoard;
           draft.pendingBoard = null;
         }))
-        setPendingBoardTimerId(null);
       }, BOARD_UPDATE_MS)
-      setPendingBoardTimerId(oldTimer => {
-        if (oldTimer != null) {
-          clearTimeout(oldTimer);
-        }
-        return timeoutId;
-      });
       return () => {
         clearTimeout(timeoutId);
       }
@@ -267,29 +196,6 @@ const App = () => {
       draft.preWinner = -1;
       evtlStartBotMove(draft);
     }))
-  }
-
-  const onSplitterMouseDown = (event) => {
-    event.preventDefault();
-    const oldX = event.screenX;
-    const oldWidth = leftWidth;
-
-      const onSplitterMouseMove = (event) => {
-        event.preventDefault();
-        setLeftWidth(oldWidth + (event.screenX - oldX));
-        console.log("onSplitterMouseMove")
-      }
-
-        const onSplitterMouseUp = (event) => {
-          event.preventDefault();
-          console.log("onSplitterMouseUp")
-          window.removeEventListener('mousemove', onSplitterMouseMove);
-          window.removeEventListener('mouseup', onSplitterMouseUp);
-        }
-
-    window.addEventListener('mousemove', onSplitterMouseMove);
-    window.addEventListener('mouseup', onSplitterMouseUp);
-    console.log("onSplitterMouseDown");
   }
 
   const undoClick = (event) => {
@@ -366,7 +272,7 @@ const App = () => {
 
       ,
 
-      <p><a href="https://de.freepik.com/vektoren-kostenlos/haekchen-und-kreuzsymbole-in-flachen-stilen_18141266.htm#query=checkbox&position=0&from_view=keyword" target="_blank">Bild von starline</a> auf Freepik</p>
+      <p><a href="https://de.freepik.com/vektoren-kostenlos/haekchen-und-kreuzsymbole-in-flachen-stilen_18141266.htm#query=checkbox&position=0&from_view=keyword" target="_blank" rel="noreferrer" >Bild von starline</a> auf Freepik</p>
     ]} initialHeights={[
       "80px",
       "calc(100vh - 80px - 70px)",

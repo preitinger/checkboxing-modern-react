@@ -26,117 +26,22 @@
   padding-left:50px;
 }
 
-.main {
-  display:flex;
-  flex-flow: row nowrap;
-  /* max-width:100%; */
-  flex-shrink:1;
-  flex-grow: 1;
-  align-items: flex-start;
-  margin-left:3vh;
-}
-
-.main-01 {
-  margin:3vh;
-  overflow:auto;
-  border:2px inset;
-  max-width: 95vw;
-  max-height:95vh;
-  box-sizing: border-box;
-  align-self: top;
-  position:relative; /* damit child "boardHourGlass" absolut positionierbar */
-}
-
-.main-01-00 {
-  padding-left:50px;
-  padding-right:50px;
-  border:1px solid black;
-  width:1300px;
-  height:2000px;
-
-}
-
-.main-02 {
-  margin: 3vh;
-  /* overflow:auto; */
-  width:400px;
-  max-height:95vh;
-  box-sizing: border-box;
-  /* border:1px solid black; */
-}
-
-.main-02-00 {
-  /* width:400px; */
-  max-height: 80vh;
-  overflow:auto;
-  /* border:1px solid black; */
-}
-
-.main-02-01 {
-  width:200px;
-  height:100px;
-  /* border:1px solid black; */
-}
-
-.main-03 {
-  /* flex-shrink: 0; */
-}
-
-.unten {
-  margin-left:6vh;
-  box-sizing: border-box;
-  /* padding-left: 50px; */
-  height:50px;
-  /* border:3px solid yellow; */
-}
-
-.out {
-  /* neu: */
-  /* display:flex;
-  flex-flow:column nowrap; */
-
-  /* original: */
-  display:block;
-  /* max-height:100vh; */
-  /* border:3px solid red; */
-  /* overflow:auto; */
-  /* margin-left:0; */
-  /* margin-left:auto; */
-  /* margin-right:auto; */
-  /* border:1px solid red; */
-  width:fit-content;
-}
-
-/**************** END "import" von test *******************/
-
-/* body, #root {
-  margin:0;
-  padding:0;
-} */
-
-
 .lightLabel {
   display: inline-block;
   width:1em;
   font-size: small;
   color:black;
-  /* color:rgb(124, 124, 124); */
 }
 
 .sidePanel {
   margin:20px;
   display: flex;
   flex-flow: column;
-  /* align-content: stretch; */
   border:1px solid black;
   border-radius: 1em;
   padding-bottom: 20px;
-  /* margin: 10px; */
   box-sizing: border-box;
-  /* background-color: rgb(219, 159, 43); */
-  /* background: linear-gradient(hsl(60, 43%, 58%), rgb(255,255,255)); */
   background: linear-gradient(hsl(0, 0%, 100%), hsl(228, 100%, 84%));
-
   color:black;
   width: calc("100% - 20px - 20px");
 }
@@ -182,28 +87,19 @@
 }
 
 .sideButton {
-  /* background: linear-gradient(hsl(212, 52%, 36%), hsl(56, 47%, 38%)); */
   margin-left:0;
   margin-bottom:10px;
   border: 2px solid black;
   border-radius: 0.5em;
   padding: 0.25em;
-  /* background-color: hsl(212, 52%, 40%); */
   color:black;
-  /* font-size:1.5em; */
-  /* font-size:3vh; */
-  /* text-shadow: 2px 7px 5px rgba(0,0,0,0.3),
-      0px -4px 10px rgba(255,255,255,0.3); */
   cursor: pointer;
 }
 
 .sideButton:hover {
-  /* background: linear-gradient(hsl(212, 30%%, 36%), hsl(56, 47%, 38%)); */
-  /* background-color: hsl(212, 52%, 36%); */
   text-decoration: underline;
 }
 .sideButton:active {
-  /* background-color: hsl(212, 52%, 30%); */
   background-color: Window;
 }
 
@@ -213,17 +109,12 @@
   border:none;
   background:inherit;
   height:1.5em;
-  /* alt: */
-  /* background-color:hsl(212, 52%, 50%); */
 }
 
 .sideItem-minified .sideButton:hover {
   text-decoration: underline;
-  /* alt: */
-  /* background-color:hsl(212, 52%, 46%); */
 }
 .sideItem-minified .sideButton:active {
-    /* background-color:hsl(212, 52%, 40%); */
 }
 
 .invisible {
@@ -253,13 +144,9 @@
   margin-right:0;
   margin-bottom:0;
   padding-right:20px;
-  /* padding-bottom:20px; */
 }
 
 .rules {
-  /* background-color: rgb(219, 159, 43); */
-  /* color:darkblue; */
-  /* TODO weg mit folgendem und was sinnvolles her */
   font-style: normal;
   font-weight: normal;
   line-height: 1.5em;
