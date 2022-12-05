@@ -1,8 +1,9 @@
 import '../App.css'
 import './Box.css'
-// import '../utils/Checkbox.css'
+import '../utils/Checkbox.css'
+import CheckedImg from '../utils/res/checked.png'
 import {min, max} from '../utils/Util.js'
-import checkedImg from '../res/checked.png'
+// import checkedImg from '../res/checked.png'
 
 const Box = ({checked, onClick, onEnter}) => {
   // console.log('checked', checked);
