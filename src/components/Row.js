@@ -4,7 +4,7 @@ import {useState, useRef} from 'react'
 
 const Row = ({
   row, botMove, noneAllowed, onlyAllowedSegId,
-  updateOnlyAllowedSegId, doMove
+  updateOnlyAllowedSegId, updateTmpXor, doMove
 }) => {
   const [segSize, setSegSize] = useState(null)
   // console.log("Row: row=", row);
@@ -21,7 +21,9 @@ const Row = ({
         seg={seg}
         botMove={botMove != null && botMove.segIdx === i ? botMove : null}
         allowed={!noneAllowed && (onlyAllowedSegId === -1 || onlyAllowedSegId === seg.id)}
+        reset={onlyAllowedSegId === -1 || onlyAllowedSegId !== seg.id}
         updateOnlyAllowedSegId={updateOnlyAllowedSegId}
+        updateTmpXor={updateTmpXor}
         doMove={doMove(i)}
         setSegSize={setSegSize}
       />

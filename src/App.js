@@ -19,6 +19,7 @@ import Commentation from './components/Commentation'
 import SplitPane from './utils/SplitPane'
 import VSplitPane from './utils/VSplitPane'
 import HSplitPane from './utils/HSplitPane'
+import SmilingComputer from './res/SmilingComputer.gif'
 
 const makeSettings = () => ({
   game: {
@@ -66,7 +67,7 @@ const makeSettings = () => ({
 //   }
 // }
 
-function evtlStartBotMove(draft) {
+const evtlStartBotMove = (draft) => {
   if (draft.settings.game.bots[draft.player]) {
     if (draft.botMove.rowIdx === -1) {
       console.log("board before BotMove.query: ", draft.board);
@@ -78,24 +79,31 @@ function evtlStartBotMove(draft) {
         console.log("animationMs", draft.settings.botMoves[draft.player].animationMs);
         draft.botMoveTime = Date.now() + draft.settings.botMoves[draft.player].animationMs;
         console.log("draft.botMove was set to ", move, "botMoveTime to ", draft.botMoveTime);
+        if (willWin) {
+          draft.preWinner = draft.player;
+        }
       }
     }
   }
 }
 
 
-function doMoveAndContinue(draft, move) {
+const doMoveAndContinue = (draft, move) => {
   if (move == null || move.rowIdx === -1) {
-    console.error("move null or empty in doMoveAndContinue");
+    // Ausnahmefall, wenn neues Spiel gestartet wird und danach der timeout aktiv wird
     return;
   }
+
   Move.doMove(draft.board, move);
   draft.player = 1 - draft.player;
   draft.botMove = Move.mkMove2();
   draft.botMoveTime = null;
+  draft.tmpXor = 0;
 
   if (gameOver(draft.board)) {
     console.log("Game over!");
+    draft.winner = draft.settings.game.lastWins ? 1 - draft.player : draft.player;
+    draft.preWinner = -1;
     draft.player = -1;
     return;
   }
@@ -121,9 +129,12 @@ const App = () => {
       pendingBoard: null,
       board: mkBoard(settings.game.rowCount),
       player: -1,
-      botMove: Move.mkMove2(), // initially empty move
+      botMove: null,
       botMoveTime: null,
       onlyAllowedSegId: -1,
+      winner: -1,
+      preWinner: -1,
+      tmpXor: 0
     }
     evtlStartBotMove(draft);
     return draft;
@@ -200,12 +211,26 @@ const App = () => {
   const onSettingsUpdate = (tmpSettings) => {
     console.log("onSettingsUpdate: tmpSettings=", tmpSettings);
 
+    if (tmpSettings.game.rowCount < 1) {
+      tmpSettings = {
+        ...tmpSettings,
+        game: {
+          ...tmpSettings.game,
+          rowCount: 1
+        }
+      }
+
+      console.log("tmpSettings geaendert: ", tmpSettings);
+    }
+    console.log("tmpSettings", tmpSettings);
+
       setState(s => produce(s, draft => {
         draft.nextSettings = tmpSettings;
 
         if (draft.player === -1) {
           draft.settings = tmpSettings;
           draft.pendingBoard = mkBoard(tmpSettings.game.rowCount);
+          draft.winner = -1;
         } else {
           draft.settings.botMoves = tmpSettings.botMoves;
         }
@@ -237,6 +262,9 @@ const App = () => {
       draft.player = 0;
       draft.botMove = Move.mkMove2(); // initially empty move
       draft.onlyAllowedSegId = -1;
+      draft.tmpXor = 0;
+      draft.winner = -1;
+      draft.preWinner = -1;
       evtlStartBotMove(draft);
     }))
   }
@@ -262,6 +290,20 @@ const App = () => {
     window.addEventListener('mousemove', onSplitterMouseMove);
     window.addEventListener('mouseup', onSplitterMouseUp);
     console.log("onSplitterMouseDown");
+  }
+
+  const undoClick = (event) => {
+    console.log("undoClick");
+    setState(s => produce(s, draft => {
+      draft.onlyAllowedSegId = -1;
+      draft.tmpXor = 0;
+    }));
+  }
+
+  const updateTmpXor = (tmpXor) => {
+    setState(s => produce(s, draft => {
+      draft.tmpXor = tmpXor;
+    }))
   }
 
   // const testRows2 = [];
@@ -435,9 +477,21 @@ const App = () => {
 
         <VSplitPane list={[
 
-          <Commentation state={state}/>,
+          <Commentation state={state} undoClick={undoClick}/>,
 
+          <div>
+          {
+            state.preWinner !== -1 ?
+            <div>
+            <p id="preWinner">
+            {state.settings.game.bots[1 - state.preWinner] ? Msg.nrsMightWin(state.preWinner) : Msg.mightWin()}
+            </p>
+              <img src={SmilingComputer} alt="Computer: ich glaube ich gewinne ;-)"/>
+            </div>
+            : null
+          }
           <SidePanel state={state} onSettingsUpdate={onSettingsUpdate}/>
+          </div>
 
         ]}/>,
 
@@ -447,15 +501,28 @@ const App = () => {
           noneAllowed={state.player === -1 || state.settings.game.bots[state.player]}
           onlyAllowedSegId={state.onlyAllowedSegId}
           hourGlass={state.pendingBoard != null}
+          congratulation={
+            state.winner >= 0 && !state.settings.game.bots[state.winner] ?
+            (
+                state.settings.game.bots[1 - state.winner] ? Msg.congrats() : Msg.congratsPlayer(state.winner)
+            )
+            :
+            null
+          }
           updateOnlyAllowedSegId={updateOnlyAllowedSegId}
+          updateTmpXor={updateTmpXor}
           doMove={doMove}
           />
 
-      ]}/>
+      ]} initialWidths={["400px"]}/>
 
       ,
 
-      <p>south bla bla ;-) nyi</p>
+      <p><a href="https://de.freepik.com/vektoren-kostenlos/haekchen-und-kreuzsymbole-in-flachen-stilen_18141266.htm#query=checkbox&position=0&from_view=keyword" target="_blank">Bild von starline</a> auf Freepik</p>
+    ]} initialHeights={[
+      "80px",
+      "calc(100vh - 80px - 70px)",
+      "70px"
     ]}/>
   )
 }

@@ -7,8 +7,8 @@ import {min, max} from '../utils/Util'
 let effectCounter = 0
 
 const Segment = ({
-  seg, botMove, allowed,
-  updateOnlyAllowedSegId, doMove, setSegSize
+  seg, botMove, allowed, reset,
+  updateOnlyAllowedSegId, updateTmpXor, doMove, setSegSize
 }) => {
 
   // console.log("Segment: allowed=", allowed);
@@ -46,13 +46,16 @@ const Segment = ({
     // setLast(-1);
 
     // (b) zusammen
-    if (state.first === -1) {
-      setState({first: boxIdx, last: boxIdx});
+    if (reset || state.first === -1) {
+      const newFirst = boxIdx, newLast = boxIdx;
+      setState({first: newFirst, last: newLast});
       updateOnlyAllowedSegId(seg.id);
+      updateTmpXor(seg.size ^ newFirst ^ (seg.size - 1 - newLast));
       return;
     }
 
     updateOnlyAllowedSegId(-1);
+    updateTmpXor(0);
     doMove(state.first, boxIdx);
     setState({first:-1,last:-1});
   }
@@ -66,9 +69,12 @@ const Segment = ({
     // setLast(boxIdx);
 
     // (b) zusammen
-    if (state.first === -1) return;
+    if (reset || state.first === -1) return;
 
     setState({first: state.first, last: boxIdx});
+    const left = min(state.first, boxIdx);
+    const right = max(state.first, boxIdx);
+    updateTmpXor(seg.size ^ left ^ (seg.size - 1 - right));
   }
 
   const onKeyDown = (event) => {
@@ -76,8 +82,9 @@ const Segment = ({
     if (event.code === "Escape") {
       // console.log("Escape");
 
-      if (state.first === -1) return;
+      if (reset || state.first === -1) return;
       updateOnlyAllowedSegId(-1);
+      updateTmpXor(0);
       setState({first: -1, last: -1})
     }
   }
@@ -88,7 +95,7 @@ const Segment = ({
     // (b) zusammen
     const first = state.first;
     const last = state.last;
-    return (first <= boxIdx && boxIdx <= last) || (last <= boxIdx && boxIdx <= first);
+    return !reset && ((first <= boxIdx && boxIdx <= last) || (last <= boxIdx && boxIdx <= first));
   }
 
   const boxes = [];
@@ -105,14 +112,14 @@ const Segment = ({
     boxes.push(
       // hier index als key ok da Inhalt von boxes statisch ist
       <Box key={i}
-      checked={seg.checked || (leftIdx <= i && i <= rightIdx) || (botMove != null && botMove.first <= i && i <= botMove.last)}
+      checked={seg.checked || (!reset && leftIdx <= i && i <= rightIdx) || (botMove != null && botMove.first <= i && i <= botMove.last)}
       onClick={onClick(i)}
       onEnter={onEnter(i)}
       />)
   }
 
   let className = 'segment';
-  if (botMove != null || state.first !== -1) {
+  if (botMove != null || (!reset && state.first !== -1)) {
     className += " highlight";
   }
   if (allowed && !seg.checked) {

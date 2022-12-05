@@ -202,9 +202,11 @@
   /* margin: 10px; */
   box-sizing: border-box;
   /* background-color: rgb(219, 159, 43); */
-  background: linear-gradient(hsl(60, 43%, 58%), rgb(255,255,255));
+  /* background: linear-gradient(hsl(60, 43%, 58%), rgb(255,255,255)); */
+  background: linear-gradient(hsl(0, 0%, 100%), hsl(228, 100%, 84%));
+
   color:black;
-  width:100%;
+  width: calc("100% - 20px - 20px");
 }
 
 .delayed * {
@@ -344,7 +346,7 @@
 
 .commentation {
   margin:20px;
-  height:100px;
+  height:140px;
   /* min-height:50px; */
   width:auto;
 }
@@ -394,4 +396,9 @@ body, #root {
   left:0;
   cursor: col-resize;
   background: #666;
+}
+
+#preWinner {
+  margin-left:20px;
+  margin-right: 20px;
 }

@@ -5,7 +5,8 @@
 }
 
 .highlight {
-  background-color:yellow!important;
+  /* background-color:yellow!important; */
+  background: linear-gradient(hsl(0, 0%, 100%), hsl(228, 100%, 84%));  
 }
 
 .segment:hover {
