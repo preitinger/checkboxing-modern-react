@@ -23,4 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # Kopien eigener "utils"
-/src/utils
+#/src/utils
